@@ -33,13 +33,22 @@ public class barebonesSetup extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
 
-
-
-
-
         waitForStart();
         while (opModeIsActive()) {
             // Code
+
+            double DEADZONE = 0.2;
+
+            double forward = Math.abs(gamepad1.left_stick_y) > DEADZONE ? -gamepad1.left_stick_y : 0;
+            double strafing = Math.abs(gamepad1.left_stick_x) > DEADZONE ? gamepad1.left_stick_x : 0;
+            double turn = Math.abs(gamepad1.right_stick_x) > DEADZONE ? gamepad1.right_stick_x : 0;
+
+
+            // Mecanum Drive Power Calculations
+            frontLeft.setPower(-forward + strafing - turn);
+            frontRight.setPower(forward + strafing + turn);
+            backLeft.setPower(-forward - strafing + turn);
+            backRight.setPower(forward - strafing - turn);
 
         }
     }
